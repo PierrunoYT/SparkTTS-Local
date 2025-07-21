@@ -244,8 +244,8 @@ def parse_arguments():
     parser.add_argument(
         "--server_name",
         type=str,
-        default="0.0.0.0",
-        help="Server host/IP for Gradio app."
+        default="127.0.0.1",
+        help="Server host/IP for Gradio app (default: 127.0.0.1 for local access only)."
     )
     parser.add_argument(
         "--server_port",

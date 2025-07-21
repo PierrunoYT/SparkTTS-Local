@@ -160,8 +160,11 @@ The web interface allows you to perform Voice Cloning and Voice Creation. Voice 
 
 **Starting the Web UI:**
 - Windows: Run `webui.bat` or `python webui.py --device 0`
+- **Custom server settings:** `python webui.py --server_name 0.0.0.0 --server_port 7860 --device 0`
 
-**Access:** The web interface will be available at [http://0.0.0.0:7860](http://0.0.0.0:7860)
+**Access:** The web interface will be available at [http://127.0.0.1:7860](http://127.0.0.1:7860) (local access only)
+
+**Network Access:** To allow access from other devices on your network, use `--server_name 0.0.0.0`
 
 **Important:** For voice cloning, you must upload or record an audio file as reference. The system will return an error if no audio file is provided.
 
