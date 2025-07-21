@@ -4,19 +4,15 @@
     </h1>
     <p>
     <b>🪟 Windows-optimized setup for SparkTTS with CUDA acceleration</b><br>
-    <em>Spark-TTS: An Efficient LLM-Based Text-to-Speech Model with Single-Stream Decoupled Speech Tokens</em>
+    <em>Local Windows installation of SparkTTS text-to-speech system</em>
     </p>
     <p>
     </p>
-    <a href="https://arxiv.org/pdf/2503.01710"><img src="https://img.shields.io/badge/Paper-ArXiv-red" alt="paper"></a>
-    <a href="https://sparkaudio.github.io/spark-tts/"><img src="https://img.shields.io/badge/Demo-Page-lightgrey" alt="version"></a>
-    <a href="https://huggingface.co/SparkAudio/Spark-TTS-0.5B"><img src="https://img.shields.io/badge/Hugging%20Face-Model%20Page-yellow" alt="Hugging Face"></a>
-    <a href="https://github.com/SparkAudio/Spark-TTS"><img src="https://img.shields.io/badge/Platform-linux-lightgrey" alt="version"></a>
-    <a href="https://github.com/SparkAudio/Spark-TTS"><img src="https://img.shields.io/badge/Python-3.12+-orange" alt="version"></a>
-    <a href="https://github.com/SparkAudio/Spark-TTS"><img src="https://img.shields.io/badge/PyTorch-2.5+-brightgreen" alt="python"></a>
-    <a href="https://github.com/SparkAudio/Spark-TTS"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="mit"></a>
+    <a href="https://github.com/SparkAudio/Spark-TTS"><img src="https://img.shields.io/badge/Original-Repository-blue" alt="original"></a>
+    <a href="https://github.com/SparkAudio/Spark-TTS"><img src="https://img.shields.io/badge/Platform-Windows-lightgrey" alt="platform"></a>
+    <a href="https://github.com/SparkAudio/Spark-TTS"><img src="https://img.shields.io/badge/Python-3.10%2B-orange" alt="python"></a>
+    <a href="https://github.com/SparkAudio/Spark-TTS"><img src="https://img.shields.io/badge/PyTorch-2.0%2B-brightgreen" alt="pytorch"></a>
 </div>
-
 
 ## SparkTTS-Local 🔥
 
@@ -25,28 +21,16 @@
 
 ### Overview
 
-SparkTTS-Local provides a streamlined Windows setup for the advanced SparkTTS text-to-speech system. This repository includes batch files, comprehensive installation guides, and Windows-specific optimizations for running SparkTTS with CUDA acceleration.
+SparkTTS-Local provides a streamlined Windows setup for the SparkTTS text-to-speech system. This repository includes batch files, comprehensive installation guides, and Windows-specific optimizations for running SparkTTS with CUDA acceleration.
 
 ### Key Features
 
-- **Simplicity and Efficiency**: Built entirely on Qwen2.5, Spark-TTS eliminates the need for additional generation models like flow matching. Instead of relying on separate models to generate acoustic features, it directly reconstructs audio from the code predicted by the LLM. This approach streamlines the process, improving efficiency and reducing complexity.
-- **High-Quality Voice Cloning**: Supports zero-shot voice cloning, which means it can replicate a speaker's voice even without specific training data for that voice. This is ideal for cross-lingual and code-switching scenarios, allowing for seamless transitions between languages and voices without requiring separate training for each one.
-- **Bilingual Support**: Supports both Chinese and English, and is capable of zero-shot voice cloning for cross-lingual and code-switching scenarios, enabling the model to synthesize speech in multiple languages with high naturalness and accuracy.
-- **Controllable Speech Generation**: Supports creating virtual speakers by adjusting parameters such as gender, pitch, and speaking rate.
-
----
-
-**Inference Overview of Voice Cloning**
-
-**Inference Overview of Controlled Generation**
-
-
-## 🚀 News
-
-- **[2025-03-04]** Our paper on this project has been published! You can read it here: [Spark-TTS](https://arxiv.org/pdf/2503.01710). 
-
-- **[2025-03-12]** Nvidia Triton Inference Serving is now supported. See the Runtime section below for more details.
-
+- **Windows Optimized**: Batch files and Windows-specific setup instructions
+- **CUDA Acceleration**: Optimized for NVIDIA GPU acceleration
+- **Easy Installation**: Step-by-step Windows installation guide
+- **Web Interface**: Simple web UI for voice cloning and text-to-speech
+- **Voice Cloning**: Zero-shot voice cloning capabilities
+- **Bilingual Support**: Supports both Chinese and English
 
 ## Install
 
@@ -70,8 +54,8 @@ SparkTTS-Local provides a streamlined Windows setup for the advanced SparkTTS te
 #### 2. **Clone the Repository**
 
 ```sh
-git clone https://github.com/SparkAudio/Spark-TTS.git
-cd Spark-TTS
+git clone https://github.com/PierrunoYT/SparkTTS-Local.git
+cd SparkTTS-Local
 ```
 
 #### 3. **Create and Activate Virtual Environment**
@@ -109,10 +93,6 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 pip install -r requirements.txt
 ```
 
-### 🐧 Linux/Mac Users
-
-> **📝 Note:** This repository is optimized for Windows. For Linux/Mac installation, please refer to the [original SparkTTS repository](https://github.com/SparkAudio/Spark-TTS) which provides comprehensive Linux installation instructions.
-
 ### 📦 **Model Download**
 
 #### Method 1: Using the provided script (Recommended)
@@ -138,9 +118,11 @@ git lfs install
 git clone https://huggingface.co/SparkAudio/Spark-TTS-0.5B pretrained_models/Spark-TTS-0.5B
 ```
 
-### 🎯 **Basic Usage**
+## Usage
 
-#### Quick Start for Windows:
+### 🎯 **Quick Start**
+
+#### Windows Web Interface:
 Run the web interface using the provided batch file:
 ```sh
 webui.bat
@@ -153,8 +135,8 @@ python webui.py --device 0
 
 > **💡 Tip:** The batch file automatically activates the virtual environment if needed.
 
-#### Command Line Inference (All Platforms):
-For direct command line inference without the web interface:
+#### Command Line Usage:
+For direct command line inference:
 
 ``` sh
 python -m cli.inference \
@@ -166,78 +148,18 @@ python -m cli.inference \
     --prompt_speech_path "path/to/prompt_audio"
 ```
 
-### 🌐 **Web UI Usage**
+### 🌐 **Web Interface**
 
-The web interface allows you to perform Voice Cloning and Voice Creation. Voice Cloning supports uploading reference audio or directly recording the audio.
+The web interface allows you to perform Voice Cloning and Voice Creation. Voice Cloning supports uploading reference audio or directly recording audio.
 
 **Starting the Web UI:**
 - Windows: Run `webui.bat` or `python webui.py --device 0`
-- Linux/Mac: Run `python webui.py --device 0`
 
 **Access:** The web interface will be available at [http://0.0.0.0:7860](http://0.0.0.0:7860)
 
 **Important:** For voice cloning, you must upload or record an audio file as reference. The system will return an error if no audio file is provided.
 
-
 **Voice Cloning and Voice Creation interfaces available in the Web UI**
-
-
-**Optional Methods**
-
-For additional CLI and Web UI methods, including alternative implementations and extended functionalities, you can refer to:
-
-- [CLI and UI by AcTePuKc](https://github.com/SparkAudio/Spark-TTS/issues/10)
-
-
-## Runtime
-
-**Nvidia Triton Inference Serving**
-
-We now provide a reference for deploying Spark-TTS with Nvidia Triton and TensorRT-LLM. The table below presents benchmark results on a single L20 GPU, using 26 different prompt_audio/target_text pairs (totalling 169 seconds of audio):
-
-| Model | Note   | Concurrency | Avg Latency     | RTF | 
-|-------|-----------|-----------------------|---------|--|
-| Spark-TTS-0.5B | [Code Commit](https://github.com/SparkAudio/Spark-TTS/tree/4d769ff782a868524f29e0be851ca64f8b22ebf1/runtime/triton_trtllm) | 1                   | 876.24 ms | 0.1362|
-| Spark-TTS-0.5B | [Code Commit](https://github.com/SparkAudio/Spark-TTS/tree/4d769ff782a868524f29e0be851ca64f8b22ebf1/runtime/triton_trtllm) | 2                   | 920.97 ms | 0.0737|
-| Spark-TTS-0.5B | [Code Commit](https://github.com/SparkAudio/Spark-TTS/tree/4d769ff782a868524f29e0be851ca64f8b22ebf1/runtime/triton_trtllm) | 4                   | 1611.51 ms | 0.0704|
-
-
-Please see the detailed instructions in [runtime/triton_trtllm/README.md](runtime/triton_trtllm/README.md ) for more information.
-
-
-## **Demos**
-
-Here are some demos generated by Spark-TTS using zero-shot voice cloning. For more demos, visit our [demo page](https://sparkaudio.github.io/spark-tts/).
-
----
-
-**Demo voices available:**
-- Donald Trump
-- Zhongli (Genshin Impact)
-
----
-
-- 陈鲁豫 Chen Luyu
-- 杨澜 Yang Lan
-
----
-
-
-- 余承东 Richard Yu
-- 马云 Jack Ma
-
----
-
-
-- 刘德华 Andy Lau
-- 徐志胜 Xu Zhisheng
-
-
----
-
-- 哪吒 Nezha
-- 李靖 Li Jing
-
 
 ## ⚠️ **Troubleshooting**
 
@@ -273,28 +195,6 @@ print("CUDA available:", torch.cuda.is_available())
 if torch.cuda.is_available():
     print("GPU:", torch.cuda.get_device_name())
 ```
-
-## To-Do List
-
-- [x] Release the Spark-TTS paper.
-- [ ] Release the training code.
-- [ ] Release the training dataset, VoxBox.
-
-
-## Citation
-
-```
-@misc{wang2025sparktts,
-      title={Spark-TTS: An Efficient LLM-Based Text-to-Speech Model with Single-Stream Decoupled Speech Tokens}, 
-      author={Xinsheng Wang and Mingqi Jiang and Ziyang Ma and Ziyu Zhang and Songxiang Liu and Linqin Li and Zheng Liang and Qixi Zheng and Rui Wang and Xiaoqin Feng and Weizhen Bian and Zhen Ye and Sitong Cheng and Ruibin Yuan and Zhixian Zhao and Xinfa Zhu and Jiahao Pan and Liumeng Xue and Pengcheng Zhu and Yunlin Chen and Zhifei Li and Xie Chen and Lei Xie and Yike Guo and Wei Xue},
-      year={2025},
-      eprint={2503.01710},
-      archivePrefix={arXiv},
-      primaryClass={cs.SD},
-      url={https://arxiv.org/abs/2503.01710}, 
-}
-```
-
 
 ## ⚠️ Usage Disclaimer
 
