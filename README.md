@@ -1,10 +1,10 @@
 <div align="center">
     <h1>
-    Spark-TTS
+    SparkTTS-Local (Windows)
     </h1>
     <p>
-    Official PyTorch code for inference of <br>
-    <b><em>Spark-TTS: An Efficient LLM-Based Text-to-Speech Model with Single-Stream Decoupled Speech Tokens</em></b>
+    <b>🪟 Windows-optimized setup for SparkTTS with CUDA acceleration</b><br>
+    <em>Spark-TTS: An Efficient LLM-Based Text-to-Speech Model with Single-Stream Decoupled Speech Tokens</em>
     </p>
     <p>
     <img src="src/logo/SparkTTS.jpg" alt="Spark-TTS Logo" style="width: 200px; height: 200px;">
@@ -31,11 +31,14 @@
 </div>
 
 
-## Spark-TTS 🔥
+## SparkTTS-Local 🔥
+
+> **⚠️ This is a Windows-focused fork optimized for local installation and ease of use.**  
+> **🚀 CUDA/GPU acceleration is strongly recommended for acceptable performance.**
 
 ### Overview
 
-Spark-TTS is an advanced text-to-speech system that uses the power of large language models (LLM) for highly accurate and natural-sounding voice synthesis. It is designed to be efficient, flexible, and powerful for both research and production use.
+SparkTTS-Local provides a streamlined Windows setup for the advanced SparkTTS text-to-speech system. This repository includes batch files, comprehensive installation guides, and Windows-specific optimizations for running SparkTTS with CUDA acceleration.
 
 ### Key Features
 
@@ -67,10 +70,13 @@ Spark-TTS is an advanced text-to-speech system that uses the power of large lang
 
 ### 🛠️ Requirements
 
-- Python **3.10** or **3.11** (recommended for best compatibility)
-    - Python 3.12/3.13 are possible for CPU, but CUDA/GPU builds may not be fully supported.
-- Git
-- (Optional) NVIDIA GPU with CUDA drivers for GPU acceleration
+- **Windows 10/11**
+- **Python 3.10 or 3.11** (recommended for best CUDA compatibility)
+- **Git**
+- **NVIDIA GPU with CUDA support** (strongly recommended)
+- **CUDA drivers** installed on your system
+
+> **⚠️ Performance Note:** While CPU-only mode is possible, it will be significantly slower. GPU acceleration via CUDA is highly recommended for practical use.
 
 ### 🚀 Windows Installation
 
@@ -99,19 +105,21 @@ venv\Scripts\activate
 pip install --upgrade pip
 ```
 
-#### 5. **Install PyTorch**
+#### 5. **Install PyTorch with CUDA Support**
 
-**With GPU (CUDA) Support (Recommended if you have NVIDIA GPU):**
+**CUDA 12.1 (Recommended):**
 
 ```sh
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 ```
 
-**For CPU Only:**
+**CUDA 11.8 (Alternative):**
 
 ```sh
-pip install torch torchvision torchaudio
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
+
+> **⚠️ CPU-Only Installation:** If you don't have an NVIDIA GPU, you can install CPU-only PyTorch with `pip install torch torchvision torchaudio`, but performance will be significantly slower.
 
 #### 6. **Install Dependencies**
 
@@ -119,18 +127,9 @@ pip install torch torchvision torchaudio
 pip install -r requirements.txt
 ```
 
-### 🐧 Linux Installation
+### 🐧 Linux/Mac Users
 
-- Install Conda: please see https://docs.conda.io/en/latest/miniconda.html
-- Create Conda env:
-
-``` sh
-conda create -n sparktts -y python=3.12
-conda activate sparktts
-pip install -r requirements.txt
-# If you are in mainland China, you can set the mirror as follows:
-pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host=mirrors.aliyun.com
-```
+> **📝 Note:** This repository is optimized for Windows. For Linux/Mac installation, please refer to the [original SparkTTS repository](https://github.com/SparkAudio/Spark-TTS) which provides comprehensive Linux installation instructions.
 
 ### 📦 **Model Download**
 
@@ -159,8 +158,8 @@ git clone https://huggingface.co/SparkAudio/Spark-TTS-0.5B pretrained_models/Spa
 
 ### 🎯 **Basic Usage**
 
-#### Windows Users:
-Run the web interface:
+#### Quick Start for Windows:
+Run the web interface using the provided batch file:
 ```sh
 webui.bat
 ```
@@ -170,12 +169,7 @@ Or manually:
 python webui.py --device 0
 ```
 
-#### Linux/Mac Users:
-You can run the demo with the following commands:
-``` sh
-cd example
-bash infer.sh
-```
+> **💡 Tip:** The batch file automatically activates the virtual environment if needed.
 
 #### Command Line Inference (All Platforms):
 For direct command line inference without the web interface:
