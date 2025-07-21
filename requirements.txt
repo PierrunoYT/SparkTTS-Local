@@ -1,0 +1,14 @@
+einops
+einx
+numpy
+omegaconf
+packaging
+safetensors
+soundfile
+soxr
+torch
+torchaudio
+torchvision
+tqdm
+transformers
+gradio
