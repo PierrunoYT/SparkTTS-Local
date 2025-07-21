@@ -171,6 +171,21 @@ The web interface allows you to perform Voice Cloning and Voice Creation. Voice 
 
 ### Common Issues
 
+### Voice Quality Issues
+
+**Female voices sound male / Male voices sound like whispers**
+- Solution: This is often caused by high temperature settings during generation
+- The default temperature has been lowered from 0.8 to 0.6 for more stable voice generation
+- If issues persist, try different reference audio files for voice cloning
+- For voice creation, experiment with different pitch and speed combinations
+
+**Poor audio quality or distorted output**
+- Ensure your reference audio (for voice cloning) is high quality and at least 16kHz sample rate
+- Try shorter text inputs (under 200 characters) for better results
+- Check that your CUDA drivers are up to date for optimal GPU performance
+
+### Installation Issues
+
 **`ImportError: cannot import name 'InterpolationMode' from 'torchvision.transforms'`**
 - Solution: Install torchvision - `pip install torchvision`
 - This package is required by transformers but not automatically installed

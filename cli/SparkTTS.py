@@ -163,9 +163,9 @@ class SparkTTS:
         gender: str = None,
         pitch: str = None,
         speed: str = None,
-        temperature: float = 0.8,
-        top_k: float = 50,
-        top_p: float = 0.95,
+        temperature: float = 0.6,
+        top_k: float = 30,
+        top_p: float = 0.9,
     ) -> torch.Tensor:
         """
         Performs inference to generate speech from text, incorporating prompt audio and/or text.
