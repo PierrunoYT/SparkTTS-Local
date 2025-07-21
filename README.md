@@ -73,16 +73,22 @@ pip install --upgrade pip
 
 #### 5. **Install PyTorch with CUDA Support**
 
-**CUDA 12.1 (Recommended):**
-
-```sh
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-```
-
-**CUDA 11.8 (Alternative):**
+**CUDA 11.8:**
 
 ```sh
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+```
+
+**CUDA 12.6:**
+
+```sh
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
+```
+
+**CUDA 12.8:**
+
+```sh
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
 ```
 
 > **⚠️ CPU-Only Installation:** If you don't have an NVIDIA GPU, you can install CPU-only PyTorch with `pip install torch torchvision torchaudio`, but performance will be significantly slower.
@@ -177,7 +183,7 @@ The web interface allows you to perform Voice Cloning and Voice Creation. Voice 
 - Solution: Use `python webui.py` for web interface or `python -m cli.inference` for command line
 
 **`CUDA available: False` (when you have NVIDIA GPU)**
-- Solution: Install CUDA-enabled PyTorch: `pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121`
+- Solution: Install CUDA-enabled PyTorch using one of the supported CUDA versions (11.8, 12.6, or 12.8) as shown in the installation section
 - Check your GPU drivers are up to date
 
 **Missing tensor warnings (mel_transformer.spectrogram.window)**
