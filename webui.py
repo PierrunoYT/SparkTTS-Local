@@ -56,6 +56,9 @@ def run_tts(
     gender=None,
     pitch=None,
     speed=None,
+    temperature=0.6,
+    top_k=30,
+    top_p=0.9,
     save_dir="example/results",
 ):
     """Perform TTS inference and save the generated audio."""
@@ -82,6 +85,9 @@ def run_tts(
             gender,
             pitch,
             speed,
+            temperature,
+            top_k,
+            top_p,
         )
 
         sf.write(save_path, wav, samplerate=16000)
@@ -97,12 +103,13 @@ def build_ui(model_dir, device=0):
     model = initialize_model(model_dir, device=device)
 
     # Define callback function for voice cloning
-    def voice_clone(text, prompt_text, prompt_wav_upload, prompt_wav_record):
+    def voice_clone(text, prompt_text, prompt_wav_upload, prompt_wav_record, temperature, top_k, top_p):
         """
         Gradio callback to clone voice using text and optional prompt speech.
         - text: The input text to be synthesised.
         - prompt_text: Additional textual info for the prompt (optional).
         - prompt_wav_upload/prompt_wav_record: Audio files used as reference.
+        - temperature, top_k, top_p: Generation parameters.
         """
         prompt_speech = prompt_wav_upload if prompt_wav_upload else prompt_wav_record
         prompt_text_clean = None if len(prompt_text) < 2 else prompt_text
@@ -114,17 +121,21 @@ def build_ui(model_dir, device=0):
             text,
             model,
             prompt_text=prompt_text_clean,
-            prompt_speech=prompt_speech
+            prompt_speech=prompt_speech,
+            temperature=temperature,
+            top_k=top_k,
+            top_p=top_p
         )
         return audio_output_path
 
     # Define callback function for creating new voices
-    def voice_creation(text, gender, pitch, speed):
+    def voice_creation(text, gender, pitch, speed, temperature, top_k, top_p):
         """
         Gradio callback to create a synthetic voice with adjustable parameters.
         - text: The input text for synthesis.
         - gender: 'male' or 'female'.
         - pitch/speed: Ranges mapped by LEVELS_MAP_UI.
+        - temperature, top_k, top_p: Generation parameters.
         """
         pitch_val = LEVELS_MAP_UI[int(pitch)]
         speed_val = LEVELS_MAP_UI[int(speed)]
@@ -133,7 +144,10 @@ def build_ui(model_dir, device=0):
             model,
             gender=gender,
             pitch=pitch_val,
-            speed=speed_val
+            speed=speed_val,
+            temperature=temperature,
+            top_k=top_k,
+            top_p=top_p
         )
         return audio_output_path
 
@@ -169,6 +183,26 @@ def build_ui(model_dir, device=0):
                         placeholder="Enter text of the prompt speech.",
                     )
 
+                # Advanced Settings for Voice Clone
+                with gr.Accordion("🔧 Advanced Settings", open=False):
+                    gr.Markdown("**Generation Parameters** - Adjust these to control voice quality and stability")
+                    with gr.Row():
+                        temperature_clone = gr.Slider(
+                            minimum=0.1, maximum=1.5, step=0.1, value=0.6,
+                            label="🌡️ Temperature",
+                            info="Lower = more stable, Higher = more creative (0.1-1.5)"
+                        )
+                        top_k_clone = gr.Slider(
+                            minimum=5, maximum=100, step=5, value=30,
+                            label="🔝 Top-K",
+                            info="Number of top tokens to consider (5-100)"
+                        )
+                        top_p_clone = gr.Slider(
+                            minimum=0.1, maximum=1.0, step=0.05, value=0.9,
+                            label="🎯 Top-P",
+                            info="Nucleus sampling threshold (0.1-1.0)"
+                        )
+
                 audio_output = gr.Audio(
                     label="Generated Audio", autoplay=True, streaming=True
                 )
@@ -182,6 +216,9 @@ def build_ui(model_dir, device=0):
                         prompt_text_input,
                         prompt_wav_upload,
                         prompt_wav_record,
+                        temperature_clone,
+                        top_k_clone,
+                        top_p_clone,
                     ],
                     outputs=[audio_output],
                 )
@@ -212,12 +249,32 @@ def build_ui(model_dir, device=0):
                         )
                         create_button = gr.Button("Create Voice")
 
+                # Advanced Settings for Voice Creation
+                with gr.Accordion("🔧 Advanced Settings", open=False):
+                    gr.Markdown("**Generation Parameters** - Adjust these to control voice quality and stability")
+                    with gr.Row():
+                        temperature_creation = gr.Slider(
+                            minimum=0.1, maximum=1.5, step=0.1, value=0.6,
+                            label="🌡️ Temperature",
+                            info="Lower = more stable, Higher = more creative (0.1-1.5)"
+                        )
+                        top_k_creation = gr.Slider(
+                            minimum=5, maximum=100, step=5, value=30,
+                            label="🔝 Top-K",
+                            info="Number of top tokens to consider (5-100)"
+                        )
+                        top_p_creation = gr.Slider(
+                            minimum=0.1, maximum=1.0, step=0.05, value=0.9,
+                            label="🎯 Top-P",
+                            info="Nucleus sampling threshold (0.1-1.0)"
+                        )
+
                 audio_output = gr.Audio(
                     label="Generated Audio", autoplay=True, streaming=True
                 )
                 create_button.click(
                     voice_creation,
-                    inputs=[text_input_creation, gender, pitch, speed],
+                    inputs=[text_input_creation, gender, pitch, speed, temperature_creation, top_k_creation, top_p_creation],
                     outputs=[audio_output],
                 )
 
