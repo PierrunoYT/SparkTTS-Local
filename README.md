@@ -21,11 +21,11 @@
 
 ### Overview
 
-SparkTTS-Local provides a streamlined Windows setup for the SparkTTS text-to-speech system. This repository includes batch files, comprehensive installation guides, and Windows-specific optimizations for running SparkTTS with CUDA acceleration.
+SparkTTS-Local provides a streamlined Windows setup for the SparkTTS text-to-speech system. This repository includes comprehensive installation guides and Windows-specific optimizations for running SparkTTS with CUDA acceleration.
 
 ### Key Features
 
-- **Windows Optimized**: Batch files and Windows-specific setup instructions
+- **Windows Optimized**: Windows-specific setup instructions
 - **CUDA Acceleration**: Optimized for NVIDIA GPU acceleration
 - **Easy Installation**: Step-by-step Windows installation guide
 - **Web Interface**: Simple web UI for voice cloning and text-to-speech
@@ -62,8 +62,10 @@ cd SparkTTS-Local
 
 ```sh
 python -m venv venv
-venv\Scripts\activate
+.\venv\Scripts\activate
 ```
+
+> **💡 PowerShell Note:** If you're using PowerShell, you may need to enable script execution: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
 
 #### 4. **Upgrade pip**
 
@@ -71,7 +73,13 @@ venv\Scripts\activate
 pip install --upgrade pip
 ```
 
-#### 5. **Install PyTorch with CUDA Support**
+#### 5. **Install Dependencies**
+
+```sh
+pip install -r requirements.txt
+```
+
+#### 6. **Install PyTorch with CUDA Support**
 
 **CUDA 11.8:**
 
@@ -92,12 +100,6 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 ```
 
 > **⚠️ CPU-Only Installation:** If you don't have an NVIDIA GPU, you can install CPU-only PyTorch with `pip install torch torchvision torchaudio`, but performance will be significantly slower.
-
-#### 6. **Install Dependencies**
-
-```sh
-pip install -r requirements.txt
-```
 
 ### 📦 **Model Download**
 
@@ -129,17 +131,10 @@ git clone https://huggingface.co/SparkAudio/Spark-TTS-0.5B pretrained_models/Spa
 ### 🎯 **Quick Start**
 
 #### Windows Web Interface:
-Run the web interface using the provided batch file:
-```sh
-webui.bat
-```
-
-Or manually:
+Run the web interface:
 ```sh
 python webui.py --device 0
 ```
-
-> **💡 Tip:** The batch file automatically activates the virtual environment if needed.
 
 #### Command Line Usage:
 For direct command line inference:
@@ -159,7 +154,7 @@ python -m cli.inference \
 The web interface allows you to perform Voice Cloning and Voice Creation. Voice Cloning supports uploading reference audio or directly recording audio.
 
 **Starting the Web UI:**
-- Windows: Run `webui.bat` or `python webui.py --device 0`
+- Windows: Run `python webui.py --device 0`
 - **Custom server settings:** `python webui.py --server_name 0.0.0.0 --server_port 7860 --device 0`
 
 **Access:** The web interface will be available at [http://127.0.0.1:7860](http://127.0.0.1:7860) (local access only)
@@ -188,6 +183,16 @@ The web interface allows you to perform Voice Cloning and Voice Creation. Voice 
 - Check that your CUDA drivers are up to date for optimal GPU performance
 
 ### Installation Issues
+
+**Virtual Environment Issues**
+- **Python executable not found in venv:** Your virtual environment may have broken paths. Recreate it:
+  ```sh
+  rmdir /s venv
+  python -m venv venv
+  .\venv\Scripts\activate
+  pip install -r requirements.txt
+  ```
+- **PowerShell execution policy errors:** Enable script execution with `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
 
 **`ImportError: cannot import name 'InterpolationMode' from 'torchvision.transforms'`**
 - Solution: Install torchvision - `pip install torchvision`

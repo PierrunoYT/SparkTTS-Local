@@ -28,24 +28,29 @@ from sparktts.utils.token_parser import LEVELS_MAP_UI
 
 def initialize_model(model_dir="pretrained_models/Spark-TTS-0.5B", device=0):
     """Load the model once at the beginning."""
-    logging.info(f"Loading model from: {model_dir}")
+    try:
+        logging.info(f"Loading model from: {model_dir}")
 
-    # Determine appropriate device based on platform and availability
-    if platform.system() == "Darwin":
-        # macOS with MPS support (Apple Silicon)
-        device = torch.device(f"mps:{device}")
-        logging.info(f"Using MPS device: {device}")
-    elif torch.cuda.is_available():
-        # System with CUDA support
-        device = torch.device(f"cuda:{device}")
-        logging.info(f"Using CUDA device: {device}")
-    else:
-        # Fall back to CPU
-        device = torch.device("cpu")
-        logging.info("GPU acceleration not available, using CPU")
+        # Determine appropriate device based on platform and availability
+        if platform.system() == "Darwin":
+            # macOS with MPS support (Apple Silicon)
+            device = torch.device(f"mps:{device}")
+            logging.info(f"Using MPS device: {device}")
+        elif torch.cuda.is_available():
+            # System with CUDA support
+            device = torch.device(f"cuda:{device}")
+            logging.info(f"Using CUDA device: {device}")
+        else:
+            # Fall back to CPU
+            device = torch.device("cpu")
+            logging.info("GPU acceleration not available, using CPU")
 
-    model = SparkTTS(model_dir, device)
-    return model
+        model = SparkTTS(model_dir, device)
+        logging.info("Model initialized successfully")
+        return model
+    except Exception as e:
+        logging.error(f"Failed to initialize model: {str(e)}")
+        raise e
 
 
 def run_tts(
@@ -98,9 +103,20 @@ def run_tts(
 
 
 def build_ui(model_dir, device=0):
-
-    # Initialize model
-    model = initialize_model(model_dir, device=device)
+    try:
+        # Initialize model
+        model = initialize_model(model_dir, device=device)
+    except Exception as e:
+        logging.error(f"Model initialization failed: {str(e)}")
+        # Create error UI instead of crashing
+        with gr.Blocks() as demo:
+            gr.HTML('<h1 style="text-align: center; color: red;">Model Loading Error</h1>')
+            gr.Markdown(f"**Error:** {str(e)}")
+            gr.Markdown("**Possible solutions:**")
+            gr.Markdown("- Check if model files exist in the pretrained_models directory")
+            gr.Markdown("- Verify all dependencies are installed")
+            gr.Markdown("- Try downloading the model using `python download_model.py`")
+        return demo
 
     # Define callback function for voice cloning
     def voice_clone(text, prompt_text, prompt_wav_upload, prompt_wav_record, temperature, top_k, top_p):
@@ -269,13 +285,13 @@ def build_ui(model_dir, device=0):
                             info="Nucleus sampling threshold (0.1-1.0)"
                         )
 
-                audio_output = gr.Audio(
+                audio_output_creation = gr.Audio(
                     label="Generated Audio", autoplay=True, streaming=True
                 )
                 create_button.click(
                     voice_creation,
                     inputs=[text_input_creation, gender, pitch, speed, temperature_creation, top_k_creation, top_p_creation],
-                    outputs=[audio_output],
+                    outputs=[audio_output_creation],
                 )
 
     return demo
@@ -313,6 +329,9 @@ def parse_arguments():
     return parser.parse_args()
 
 if __name__ == "__main__":
+    # Configure logging
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    
     # Parse command-line arguments
     args = parse_arguments()
 
